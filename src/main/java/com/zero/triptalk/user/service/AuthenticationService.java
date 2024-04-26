@@ -1,6 +1,5 @@
 package com.zero.triptalk.user.service;
 
-import com.zero.triptalk.alert.dto.response.AlertCntResponse;
 import com.zero.triptalk.component.RedisUtil;
 import com.zero.triptalk.config.JwtService;
 import com.zero.triptalk.exception.code.UserErrorCode;
@@ -11,8 +10,8 @@ import com.zero.triptalk.planner.entity.Planner;
 import com.zero.triptalk.planner.repository.PlannerRepository;
 import com.zero.triptalk.user.entity.UserDocument;
 import com.zero.triptalk.user.entity.UserEntity;
-import com.zero.triptalk.user.enumType.UserLoginRole;
-import com.zero.triptalk.user.enumType.UserTypeRole;
+import com.zero.triptalk.user.enumType.UserType;
+import com.zero.triptalk.user.enumType.LoginType;
 import com.zero.triptalk.user.repository.UserRepository;
 import com.zero.triptalk.user.repository.UserSearchRepository;
 import com.zero.triptalk.user.request.*;
@@ -143,8 +142,8 @@ public class AuthenticationService {
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .nickname(nickname)
-                .UserType(UserTypeRole.USER)
-                .userLoginRole(UserLoginRole.GENERAL_USER_LOGIN)
+                .UserType(UserType.USER)
+                .loginType(LoginType.GENERAL)
                 .registerAt(currentTime)
                 .updateAt(currentTime)
                 .profile(profile)
@@ -237,8 +236,8 @@ public class AuthenticationService {
         String newProfile = S3FileSaveAndOldImageDeleteAndNewProfile(newImage, oldImage);
 
         // 최종 업데이트 코드
-        if (existingUser.getUserLoginRole().equals(UserLoginRole.KAKAO_USER_LOGIN)
-                || existingUser.getUserLoginRole().equals(UserLoginRole.GOOGLE_USER_LOGIN)){
+        if (existingUser.getLoginType().equals(LoginType.KAKAO)
+                || existingUser.getLoginType().equals(LoginType.GOOGLE)){
 
             existingUser.setUpdateAt(LocalDateTime.now());
             existingUser.setNickname(newNickname);

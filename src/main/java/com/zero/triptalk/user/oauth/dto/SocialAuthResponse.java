@@ -1,9 +1,9 @@
-package com.zero.triptalk.user.dto;
+package com.zero.triptalk.user.oauth.dto;
 
 import lombok.Getter;
 
 @Getter
-public class GoogleAuthResponse {
+public class SocialAuthResponse {
     private String access_token;
     private String expires_in;
     private String refresh_token;

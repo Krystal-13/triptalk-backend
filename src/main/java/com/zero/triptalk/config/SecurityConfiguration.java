@@ -25,6 +25,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/api/users/**",
                             "/api/auth/**",
+                            "/api/oauth/**",
                             "/swagger-ui.html",
                             "/v3/api-docs/**",
                             "/v2/api-docs/**",

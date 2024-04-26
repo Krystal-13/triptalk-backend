@@ -1,6 +1,6 @@
 package com.zero.triptalk.user.enumType;
 
-public enum UserTypeRole {
+public enum UserType {
     USER
 
 }

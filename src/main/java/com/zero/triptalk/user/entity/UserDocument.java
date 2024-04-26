@@ -1,7 +1,7 @@
 package com.zero.triptalk.user.entity;
 
-import com.zero.triptalk.user.enumType.UserLoginRole;
-import com.zero.triptalk.user.enumType.UserTypeRole;
+import com.zero.triptalk.user.enumType.LoginType;
+import com.zero.triptalk.user.enumType.UserType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,19 +25,19 @@ public class UserDocument {
     private LocalDateTime registerAt;
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_millis)
     private LocalDateTime updateAt;
-    private UserTypeRole UserType;
-    private UserLoginRole userLoginRole;
+    private UserType UserType;
+    private LoginType loginType;
 
     @Builder
-    public UserDocument(Long userId, String profile, String nickname, String aboutMe, LocalDateTime registerAt, LocalDateTime updateAt, UserTypeRole userType, UserLoginRole userLoginRole) {
+    public UserDocument(Long userId, String profile, String nickname, String aboutMe, LocalDateTime registerAt, LocalDateTime updateAt, com.zero.triptalk.user.enumType.UserType userType, LoginType loginType) {
         this.userId = userId;
         this.profile = profile;
         this.nickname = nickname;
         this.aboutMe = aboutMe;
         this.registerAt = registerAt;
         this.updateAt = updateAt;
-        UserType = userType;
-        this.userLoginRole = userLoginRole;
+        this.UserType = userType;
+        this.loginType = loginType;
     }
 
     public static UserDocument ofEntity(UserEntity user) {
@@ -49,7 +49,7 @@ public class UserDocument {
                 .registerAt(user.getRegisterAt())
                 .updateAt(user.getUpdateAt())
                 .userType(user.getUserType())
-                .userLoginRole(user.getUserLoginRole())
+                .loginType(user.getLoginType())
                 .build();
     }
 
