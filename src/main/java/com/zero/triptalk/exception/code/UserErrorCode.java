@@ -17,7 +17,8 @@ public enum UserErrorCode {
     EMAIL_NOT_FOUND_ERROR(HttpStatus.BAD_REQUEST, "이메일을 찾을 수 없습니다!"),
     NO_VAILD_EMAIL_AND_PASSWORD(HttpStatus.BAD_REQUEST, "아이디 또는 비밀번호의 정보가 일치하지 않습니다. 다시 확인해주세요"),
     EMAIL_CHECK_FAIL_NO_SAME_ERROR(HttpStatus.BAD_REQUEST, "이메일이 동일하지 않습니다!"),
-    PASSWORD_NOT_SAME(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+    PASSWORD_NOT_SAME(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+    INVALID_REQUEST(HttpStatus.BAD_REQUEST, "지원하지 않는 로그인입니다.");
 
 
     private final HttpStatus status;

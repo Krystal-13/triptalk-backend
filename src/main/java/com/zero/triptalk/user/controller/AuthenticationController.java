@@ -6,7 +6,8 @@ import com.zero.triptalk.user.entity.UserEntity;
 import com.zero.triptalk.user.request.*;
 import com.zero.triptalk.user.response.*;
 import com.zero.triptalk.user.service.AuthenticationService;
-import com.zero.triptalk.user.service.KakaoAuthService;
+//import com.zero.triptalk.user.service.KakaoAuthService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,17 +20,13 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/users")
+@Slf4j
 public class AuthenticationController {
 
     private final AuthenticationService service;
 
-    private final KakaoAuthService kakaoAuthService;
-
-
-
-    public AuthenticationController(AuthenticationService service, KakaoAuthService kakaoAuthService) {
+    public AuthenticationController(AuthenticationService service) {
         this.service = service;
-        this.kakaoAuthService = kakaoAuthService;
     }
 
     /**
@@ -56,53 +53,6 @@ public class AuthenticationController {
             EmailCheckOkResponse response = service.registerEmailCheckToken(request);
             return ResponseEntity.ok(response);
     }
-
-    @PostMapping("/kakao/login")
-    public KakaoResponse registerForKakao(@RequestBody KakaoRequest request)  {
-        try {
-            String code = request.getIngaCode();
-
-            JsonNode access_token = kakaoAuthService.getKakaoAccessToken(code);
-
-            ObjectMapper mapper = new ObjectMapper();
-
-            JsonNode jsonNode = mapper.readTree(access_token.traverse());
-
-            // 이메일을 위해 남겨진 것
-            String accessToken = jsonNode.get("access_token").asText();
-
-            // 로그인 을 위해 남겨진 코드 (관련한 내용 처리)
-            JsonNode getUserInfo = kakaoAuthService.getKakaoUserInfo(accessToken);
-
-            // Assuming you have the JSON response in a string variable called responseBody
-            String responseBody = String.valueOf(getUserInfo);
-
-            // Create an ObjectMapper
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            // Parse the JSON response
-            JsonNode jsonNodeByAccountInfo = objectMapper.readTree(responseBody);
-
-            // Extract the "nickname" and "email" values
-            String nickname = jsonNodeByAccountInfo.get("properties").get("nickname").asText();
-            String email = jsonNodeByAccountInfo.get("kakao_account").get("email").asText();
-
-            String jwtFinalToken  = kakaoAuthService.loginKakao(nickname,email);
-
-            return KakaoResponse.builder()
-                    .kakaoLoginOk("로그인이 완료되었습니다")
-                    .token(jwtFinalToken)
-                    .build();
-        } catch (IOException e) {
-            e.printStackTrace(); // 예외 스택 트레이스를 출력합니다.
-
-            return KakaoResponse.builder()
-                    .kakaoLoginOk("로그인에 실패했습니다: " + e.getMessage()) // 실패 메시지를 추가
-                    .token("x") // 토큰은 비워서 반환
-                    .build();
-        }
-    }
-
 
     @PostMapping("/update/password/check")
     @PreAuthorize("hasAuthority('USER')")

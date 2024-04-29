@@ -1,7 +1,7 @@
 package com.zero.triptalk.user.entity;
 
-import com.zero.triptalk.user.enumType.UserLoginRole;
-import com.zero.triptalk.user.enumType.UserTypeRole;
+import com.zero.triptalk.user.enumType.LoginType;
+import com.zero.triptalk.user.enumType.UserType;
 import lombok.*;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -46,10 +46,10 @@ public class UserEntity implements UserDetails {
     private LocalDateTime updateAt;
 
     @Enumerated(EnumType.STRING)
-    private UserTypeRole UserType;
+    private UserType UserType;
 
     @Enumerated(EnumType.STRING)
-    private UserLoginRole userLoginRole;
+    private LoginType loginType;
 
     public static boolean isValidEmail(String email) {
         // 이메일 형식을 정규표현식으로 확인

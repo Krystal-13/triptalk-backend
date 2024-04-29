@@ -1,4 +1,4 @@
-package com.zero.triptalk.user.dto;
+package com.zero.triptalk.user.response;
 
 import com.zero.triptalk.user.entity.UserDocument;
 import lombok.AccessLevel;

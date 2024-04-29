@@ -1,8 +1,7 @@
-package com.zero.triptalk.user.dto;
+package com.zero.triptalk.user.response;
 
 import com.zero.triptalk.planner.entity.PlannerDocument;
 import com.zero.triptalk.user.entity.UserDocument;
-import com.zero.triptalk.user.response.MyPlannerBoardResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

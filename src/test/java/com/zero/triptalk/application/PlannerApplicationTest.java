@@ -16,7 +16,7 @@ import com.zero.triptalk.planner.service.PlannerService;
 import com.zero.triptalk.planner.type.PlannerStatus;
 import com.zero.triptalk.reply.service.ReplyService;
 import com.zero.triptalk.user.entity.UserEntity;
-import com.zero.triptalk.user.enumType.UserTypeRole;
+import com.zero.triptalk.user.enumType.UserType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,7 +71,7 @@ class PlannerApplicationTest {
 
         UserEntity user = UserEntity.builder()
                 .userId(1L)
-                .UserType(UserTypeRole.USER)
+                .UserType(UserType.USER)
                 .nickname("11")
                 .email("test@exam.com")
                 .password("11")
@@ -138,7 +138,7 @@ class PlannerApplicationTest {
                 List.of("https://triptalk-s3.s3.ap-northeast-2.amazonaws.com/8437334e-ee54-4138-b9ad-63f7f498429f.jpg");
         UserEntity user = UserEntity.builder()
                 .userId(plannerId)
-                .UserType(UserTypeRole.USER)
+                .UserType(UserType.USER)
                 .nickname("11")
                 .email("test@exam.com")
                 .password("11")
