@@ -1,11 +1,8 @@
 package com.zero.triptalk.reply.service;
 
-import com.zero.triptalk.alert.entity.Alert;
 import com.zero.triptalk.alert.repository.AlertRepository;
 import com.zero.triptalk.exception.custom.ReplyException;
 import com.zero.triptalk.exception.custom.UserException;
-import com.zero.triptalk.planner.entity.Planner;
-import com.zero.triptalk.planner.entity.PlannerDetail;
 import com.zero.triptalk.planner.repository.PlannerDetailRepository;
 import com.zero.triptalk.planner.repository.PlannerRepository;
 import com.zero.triptalk.reply.dto.request.ReplyRequest;
@@ -19,13 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

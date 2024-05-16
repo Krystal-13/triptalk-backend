@@ -1,6 +1,5 @@
 package com.zero.triptalk.like.service;
 
-import com.zero.triptalk.alert.entity.Alert;
 import com.zero.triptalk.alert.repository.AlertRepository;
 import com.zero.triptalk.like.dto.response.LikenOnePlusMinusResponse;
 import com.zero.triptalk.like.dto.response.UserLikeAndSaveYnResponse;
@@ -12,9 +11,7 @@ import com.zero.triptalk.like.repository.PlannerLikeRepository;
 import com.zero.triptalk.like.repository.UserLikeRepository;
 import com.zero.triptalk.like.repository.UserSaveRepository;
 import com.zero.triptalk.planner.entity.Planner;
-import com.zero.triptalk.planner.entity.PlannerDocument;
 import com.zero.triptalk.planner.repository.PlannerRepository;
-import com.zero.triptalk.planner.repository.PlannerSearchRepository;
 import com.zero.triptalk.user.entity.UserEntity;
 import com.zero.triptalk.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -54,9 +50,6 @@ public class LikeServiceTest {
 
     @Mock
     private AlertRepository alertRepository;
-
-    @Mock
-    private PlannerSearchRepository plannerSearchRepository;
 
     @Test
     @DisplayName("좋아요 마이너스 할때 잘되는지  ")

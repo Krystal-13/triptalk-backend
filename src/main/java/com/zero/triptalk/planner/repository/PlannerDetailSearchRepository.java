@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlannerDetailSearchRepository extends ElasticsearchRepository<PlannerDetailDocument, Long> {
-    void deleteAllByPlannerId(Long plannerId);
 }

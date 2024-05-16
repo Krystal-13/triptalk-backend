@@ -1,7 +1,6 @@
 package com.zero.triptalk.exception.handler;
 
 import com.zero.triptalk.exception.custom.*;
-import com.zero.triptalk.exception.custom.OauthFeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.NoSuchIndexException;
 import org.springframework.http.HttpStatus;

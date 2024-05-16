@@ -1,12 +1,9 @@
 package com.zero.triptalk.user.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zero.triptalk.user.entity.UserEntity;
 import com.zero.triptalk.user.request.*;
 import com.zero.triptalk.user.response.*;
 import com.zero.triptalk.user.service.AuthenticationService;
-//import com.zero.triptalk.user.service.KakaoAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/users")

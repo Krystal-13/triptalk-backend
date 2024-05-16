@@ -8,12 +8,10 @@ import com.zero.triptalk.image.service.ImageService;
 import com.zero.triptalk.like.repository.UserSaveRepository;
 import com.zero.triptalk.planner.entity.Planner;
 import com.zero.triptalk.planner.repository.PlannerRepository;
-import com.zero.triptalk.user.entity.UserDocument;
 import com.zero.triptalk.user.entity.UserEntity;
-import com.zero.triptalk.user.enumType.UserType;
 import com.zero.triptalk.user.enumType.LoginType;
+import com.zero.triptalk.user.enumType.UserType;
 import com.zero.triptalk.user.repository.UserRepository;
-import com.zero.triptalk.user.repository.UserSearchRepository;
 import com.zero.triptalk.user.request.*;
 import com.zero.triptalk.user.response.*;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +54,6 @@ public class AuthenticationService {
     private final JavaMailSender mailSender;
     private final ImageService imageService;
     private final RedisUtil redisUtil;
-    private final UserSearchRepository userSearchRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -67,7 +64,7 @@ public class AuthenticationService {
     @Value("${spring.mail.username}")
     private String senderMail;
 
-    public AuthenticationService(UserRepository repository, PlannerRepository plannerRepository, UserSaveRepository userSaveRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, JavaMailSender mailSender, ImageService imageService, RedisUtil redisUtil, UserSearchRepository userSearchRepository) {
+    public AuthenticationService(UserRepository repository, PlannerRepository plannerRepository, UserSaveRepository userSaveRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, JavaMailSender mailSender, ImageService imageService, RedisUtil redisUtil) {
         this.repository = repository;
         this.plannerRepository = plannerRepository;
         this.userSaveRepository = userSaveRepository;
@@ -77,7 +74,6 @@ public class AuthenticationService {
         this.mailSender = mailSender;
         this.imageService = imageService;
         this.redisUtil = redisUtil;
-        this.userSearchRepository = userSearchRepository;
     }
 
     public String userEmail(){
@@ -151,7 +147,6 @@ public class AuthenticationService {
                 .build();
 
         repository.save(user);
-        userSearchRepository.save(UserDocument.ofEntity(user));
 
         return AuthenticationResponse.builder()
                 .registerOk("회원가입이 완료되었습니다. 로그인 해주세요 감사합니다!")
@@ -259,7 +254,6 @@ public class AuthenticationService {
         }
 
         repository.save(existingUser);
-        userSearchRepository.save(UserDocument.ofEntity(existingUser));
 
         return AuthenticationResponse.builder()
                                     .updateOk("업데이트가 완료되었습니다.")

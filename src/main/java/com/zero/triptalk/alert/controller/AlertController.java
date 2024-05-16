@@ -1,6 +1,5 @@
 package com.zero.triptalk.alert.controller;
 
-import com.zero.triptalk.alert.dto.request.AlertUpdateResponse;
 import com.zero.triptalk.alert.dto.response.AlertCntResponse;
 import com.zero.triptalk.alert.dto.response.AlertDeleteResponse;
 import com.zero.triptalk.alert.dto.response.AlertResponse;

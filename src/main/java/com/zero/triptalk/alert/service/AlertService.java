@@ -1,6 +1,5 @@
 package com.zero.triptalk.alert.service;
 
-import com.zero.triptalk.alert.dto.request.AlertUpdateResponse;
 import com.zero.triptalk.alert.dto.response.AlertCntResponse;
 import com.zero.triptalk.alert.dto.response.AlertDeleteResponse;
 import com.zero.triptalk.alert.dto.response.AlertResponse;
@@ -9,8 +8,6 @@ import com.zero.triptalk.alert.repository.AlertDeleteRepository;
 import com.zero.triptalk.alert.repository.AlertRepository;
 import com.zero.triptalk.exception.code.AlertErrorCode;
 import com.zero.triptalk.exception.custom.AlertException;
-import com.zero.triptalk.exception.custom.LikeException;
-import com.zero.triptalk.exception.custom.UserException;
 import com.zero.triptalk.user.entity.UserEntity;
 import com.zero.triptalk.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.zero.triptalk.exception.code.UserErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +48,7 @@ public class AlertService {
         // 알림을 조회하면서 userCheckYn 값을 true로 변경
         alertPage.forEach(alert -> markAlertAsChecked(alert.getAlertId()));
 
-        Page<AlertResponse> alertResponses = alertPage.map(alert -> AlertResponse.builder()
+        return alertPage.map(alert -> AlertResponse.builder()
                 .alertId(alert.getAlertId())
                 .plannerId(alert.getPlanner().getPlannerId())
                 .alertContent(alert.getAlertContent())
@@ -61,8 +56,6 @@ public class AlertService {
                 .profile(alert.getUser().getProfile())
                 .alertDt(alert.getAlertDt())
                 .build());
-
-        return alertResponses;
     }
 
     public AlertCntResponse getAlertNewCnt(UserEntity user) {

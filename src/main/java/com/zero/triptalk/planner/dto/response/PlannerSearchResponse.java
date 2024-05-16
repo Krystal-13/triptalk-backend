@@ -22,7 +22,7 @@ public class PlannerSearchResponse {
     private Long likeCount;
 
     @Builder
-    public PlannerSearchResponse(Long plannerLikeId, Long plannerId, String title, String thumbnail, String nickname, LocalDateTime startDate, LocalDateTime endDate, Long views, Long likeCount) {
+    public PlannerSearchResponse(Long plannerId, String title, String thumbnail, String nickname, LocalDateTime startDate, LocalDateTime endDate, Long views, Long likeCount) {
         this.plannerId = plannerId;
         this.title = title;
         this.thumbnail = thumbnail;
@@ -39,7 +39,7 @@ public class PlannerSearchResponse {
                 .plannerId(document.getPlannerId())
                 .title(document.getTitle())
                 .thumbnail(document.getThumbnail())
-                .nickname(document.getUser().getNickname())
+                .nickname(document.getUserNickname())
                 .startDate(document.getStartDate())
                 .endDate(document.getEndDate())
                 .views(document.getViews())
