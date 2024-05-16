@@ -1,15 +1,14 @@
 package com.zero.triptalk.planner.service;
 
 import com.zero.triptalk.exception.custom.PlannerDetailException;
-import com.zero.triptalk.place.entity.Place;
 import com.zero.triptalk.image.service.ImageService;
+import com.zero.triptalk.place.entity.Place;
 import com.zero.triptalk.place.service.PlaceService;
 import com.zero.triptalk.planner.dto.request.PlannerDetailRequest;
 import com.zero.triptalk.planner.dto.response.PlannerDetailResponse;
 import com.zero.triptalk.planner.entity.Planner;
 import com.zero.triptalk.planner.entity.PlannerDetail;
 import com.zero.triptalk.planner.repository.PlannerDetailRepository;
-import com.zero.triptalk.planner.repository.PlannerDetailSearchRepository;
 import com.zero.triptalk.planner.repository.PlannerRepository;
 import com.zero.triptalk.user.entity.UserEntity;
 import com.zero.triptalk.user.repository.UserRepository;
@@ -27,7 +26,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static com.zero.triptalk.exception.code.PlannerDetailErrorCode.NOT_FOUND_PLANNER_DETAIL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,10 +58,6 @@ class PlannerDetailServiceTest {
 
     @InjectMocks
     private PlannerDetailService plannerDetailService;
-
-    @Mock
-    private PlannerDetailSearchRepository plannerDetailSearchRepository;
-
 
     @Test
     @DisplayName("상세 일정 조회 - 해당 일정이 없는 경우")

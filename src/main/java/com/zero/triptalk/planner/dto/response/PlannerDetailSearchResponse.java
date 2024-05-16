@@ -17,43 +17,37 @@ public class PlannerDetailSearchResponse {
     private String nickname;
     private String profile;
     private String description;
-    private List<String> image;
+    private List<String> images;
     private String place;
     private Double lat;
     private Double lon;
     private LocalDateTime date;
-    private Long views;
-    private Long likeCount;
 
     @Builder
-    public PlannerDetailSearchResponse(Long plannerDetailId, String nickname, String profile, String description, List<String> image, String place, Double lat, Double lon, LocalDateTime date, Long views, Long likeCount) {
+    public PlannerDetailSearchResponse(Long plannerDetailId, String nickname, String profile, String description, List<String> images, String place, Double lat, Double lon, LocalDateTime date) {
         this.plannerDetailId = plannerDetailId;
         this.nickname = nickname;
         this.profile = profile;
         this.description = description;
-        this.image = image;
+        this.images = images;
         this.place = place;
         this.lat = lat;
         this.lon = lon;
         this.date = date;
-        this.views = views;
-        this.likeCount = likeCount;
     }
 
     public static PlannerDetailSearchResponse ofDocument(PlannerDetailDocument document) {
 
         return PlannerDetailSearchResponse.builder()
                 .plannerDetailId(document.getPlannerDetailId())
-                .nickname(document.getNickname())
+                .nickname(document.getUserNickname())
                 .profile(document.getProfile())
                 .description(document.getDescription())
-                .image(document.getImages())
-                .place(document.getRoadAddress())
+                .images(document.getImages())
+                .place(document.getPlace())
                 .lat(document.getPoint().lat())
                 .lon(document.getPoint().lon())
                 .date(document.getDate())
-                .views(document.getViews())
-                .likeCount(document.getLikes())
                 .build();
     }
 }

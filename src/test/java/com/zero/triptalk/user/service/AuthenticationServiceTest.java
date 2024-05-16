@@ -2,10 +2,8 @@ package com.zero.triptalk.user.service;
 
 import com.zero.triptalk.config.JwtService;
 import com.zero.triptalk.exception.custom.UserException;
-import com.zero.triptalk.user.entity.UserDocument;
 import com.zero.triptalk.user.entity.UserEntity;
 import com.zero.triptalk.user.repository.UserRepository;
-import com.zero.triptalk.user.repository.UserSearchRepository;
 import com.zero.triptalk.user.request.AuthenticationRequest;
 import com.zero.triptalk.user.request.EmailTokenRequest;
 import com.zero.triptalk.user.request.NicknameCheckRequest;
@@ -38,9 +36,6 @@ public class AuthenticationServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private UserSearchRepository userSearchRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -78,7 +73,6 @@ public class AuthenticationServiceTest {
         // 회원가입이 완료 되었을 때
         assertEquals("회원가입이 완료되었습니다. 로그인 해주세요 감사합니다!", response.getRegisterOk());
         verify(userRepository, times(1)).save(any(UserEntity.class));
-        verify(userSearchRepository, times(1)).save(any(UserDocument.class));
     }
 
     @Test

@@ -60,7 +60,7 @@ public class ImageService {
 
     private String generateFileName(String originalFileName) {
         String ext = getFileExtension(originalFileName);
-        return UUID.randomUUID().toString() + ext;
+        return UUID.randomUUID() + ext;
     }
 
     private String getFileExtension(String fileName) {

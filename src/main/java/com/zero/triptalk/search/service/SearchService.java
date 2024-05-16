@@ -11,10 +11,10 @@ import com.zero.triptalk.planner.entity.PlannerDocument;
 import com.zero.triptalk.planner.repository.CustomPlannerDetailSearchRepository;
 import com.zero.triptalk.planner.repository.CustomPlannerSearchRepository;
 import com.zero.triptalk.planner.repository.PlannerSearchRepository;
-import com.zero.triptalk.user.response.UserInfoSearchResponse;
-import com.zero.triptalk.user.response.UserSearchResponse;
 import com.zero.triptalk.user.entity.UserDocument;
 import com.zero.triptalk.user.repository.UserSearchRepository;
+import com.zero.triptalk.user.response.UserInfoSearchResponse;
+import com.zero.triptalk.user.response.UserSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.NoSuchIndexException;
@@ -52,7 +52,7 @@ public class SearchService {
             throw new SearchException(SearchErrorCode.INVALID_REQUEST);
         }
 
-        List<PlannerDetailDocument> searchResponses = customPlannerSearchRepository
+        List<PlannerDetailDocument> searchResponses = customPlannerDetailSearchRepository
                                 .searchByRegionAndSearchType(region, searchType, pageable);
 
         return searchResponses.stream().map(PlannerDetailSearchResponse::ofDocument)

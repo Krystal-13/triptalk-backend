@@ -6,7 +6,6 @@ import com.zero.triptalk.image.service.ImageService;
 import com.zero.triptalk.planner.dto.response.PlannerDetailListResponse;
 import com.zero.triptalk.planner.dto.response.PlannerDetailResponse;
 import com.zero.triptalk.planner.entity.PlannerDetail;
-import com.zero.triptalk.planner.entity.PlannerDetailDocument;
 import com.zero.triptalk.planner.repository.CustomPlannerDetailRepository;
 import com.zero.triptalk.planner.repository.PlannerDetailRepository;
 import com.zero.triptalk.planner.repository.PlannerDetailSearchRepository;
@@ -25,11 +24,11 @@ import static com.zero.triptalk.exception.code.UserErrorCode.USER_NOT_FOUND;
 @RequiredArgsConstructor
 public class PlannerDetailService {
 
-    private final PlannerDetailSearchRepository plannerDetailSearchRepository;
     private final PlannerDetailRepository plannerDetailRepository;
     private final CustomPlannerDetailRepository customPlannerDetailRepository;
     private final UserRepository userRepository;
     private final ImageService imageService;
+    private final PlannerDetailSearchRepository plannerDetailSearchRepository;
 
 
     public List<PlannerDetailListResponse> getAllPlannerDetail() {
@@ -62,7 +61,6 @@ public class PlannerDetailService {
 
     public void savePlannerDetailList(List<PlannerDetail> plannerDetailList) {
         List<PlannerDetail> plannerDetails = plannerDetailRepository.saveAll(plannerDetailList);
-        plannerDetailSearchRepository.saveAll(PlannerDetailDocument.ofEntity(plannerDetails));
     }
 
     public PlannerDetail findById(Long plannerDetailId) {

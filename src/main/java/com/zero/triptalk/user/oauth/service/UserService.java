@@ -3,13 +3,11 @@ package com.zero.triptalk.user.oauth.service;
 import com.zero.triptalk.config.JwtService;
 import com.zero.triptalk.exception.code.UserErrorCode;
 import com.zero.triptalk.exception.custom.UserException;
-import com.zero.triptalk.user.entity.UserDocument;
 import com.zero.triptalk.user.entity.UserEntity;
 import com.zero.triptalk.user.enumType.UserType;
 import com.zero.triptalk.user.oauth.dto.SocialAuthResponse;
 import com.zero.triptalk.user.oauth.dto.UserInfoResponse;
 import com.zero.triptalk.user.repository.UserRepository;
-import com.zero.triptalk.user.repository.UserSearchRepository;
 import com.zero.triptalk.user.response.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +28,6 @@ public class UserService {
 
     private final List<SocialLoginService> socialLoginServiceList;
     private final UserRepository userRepository;
-    private final UserSearchRepository userSearchRepository;
     private final JwtService jwtService;
 
     public String getSocialLoginUri(String loginType) {
@@ -82,7 +79,6 @@ public class UserService {
                 .build();
 
         userRepository.saveAndFlush(user);
-        userSearchRepository.save(UserDocument.ofEntity(user));
 
         return user;
     }

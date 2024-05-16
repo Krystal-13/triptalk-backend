@@ -1,5 +1,8 @@
 package com.zero.triptalk.planner.repository;
 
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
+import com.zero.triptalk.exception.code.SearchErrorCode;
+import com.zero.triptalk.exception.custom.SearchException;
 import com.zero.triptalk.planner.entity.PlannerDetailDocument;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +27,40 @@ public class CustomPlannerDetailSearchRepository {
 
     private final ElasticsearchOperations elasticsearchOperations;
 
+    public List<PlannerDetailDocument> searchByRegionAndSearchType(String region, String searchType, Pageable pageable) {
+
+        Criteria criteria = Criteria.where("place")
+                .and("placeName")
+                .contains(region);
+
+        CriteriaQuery query = CriteriaQuery.builder(criteria)
+                .withSourceFilter(new FetchSourceFilter(
+                        new String[]{"plannerDetailId", "userNickname",
+                                "profile", "description",
+                                "images", "place",
+                                "point", "date"}, null))
+                .withSort(Sort.by(searchType).descending())
+                .withPageable(pageable)
+                .build();
+
+        try {
+            return elasticsearchOperations.search(query, PlannerDetailDocument.class)
+                    .stream().map(SearchHit::getContent).collect(Collectors.toList());
+        } catch (ElasticsearchException e) {
+            log.error(getClass() + " 의 Exception -> " + e.getMessage());
+            throw new SearchException(SearchErrorCode.RESULT_NOT_FOUND);
+        }
+
+    }
+
     public List<PlannerDetailDocument> searchByGeoPointBox(GeoPoint topLeft, GeoPoint bottomRight, Pageable pageable) {
 
         Criteria criteria = Criteria.where("point").boundedBy(topLeft, bottomRight);
 
         CriteriaQuery query = CriteriaQuery.builder(criteria)
                 .withSourceFilter(new FetchSourceFilter(
-                        new String[]{"plannerDetailId", "nickname",
-                                        "profile", "roadAddress",
+                        new String[]{"plannerDetailId", "userNickname",
+                                        "profile", "place",
                                             "point", "description",
                                                 "images", "date"}, null))
                 .withPageable(pageable)
@@ -47,8 +76,8 @@ public class CustomPlannerDetailSearchRepository {
 
         CriteriaQuery query = CriteriaQuery.builder(criteria)
                 .withSourceFilter(new FetchSourceFilter(
-                        new String[]{"plannerDetailId", "nickname",
-                                        "profile", "roadAddress",
+                        new String[]{"plannerDetailId", "userNickname",
+                                        "profile", "place",
                                             "point", "description",
                                                 "images", "date"}, null))
                 .withSort(Sort.by(new GeoDistanceOrder("point", point)))

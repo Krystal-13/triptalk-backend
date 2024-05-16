@@ -6,9 +6,7 @@ import com.zero.triptalk.exception.custom.PlannerException;
 import com.zero.triptalk.planner.dto.request.PlannerRequest;
 import com.zero.triptalk.planner.dto.response.PlannerListResult;
 import com.zero.triptalk.planner.entity.Planner;
-import com.zero.triptalk.planner.entity.PlannerDocument;
 import com.zero.triptalk.planner.repository.CustomPlannerRepository;
-import com.zero.triptalk.planner.repository.PlannerDetailSearchRepository;
 import com.zero.triptalk.planner.repository.PlannerRepository;
 import com.zero.triptalk.planner.repository.PlannerSearchRepository;
 import com.zero.triptalk.planner.type.SortType;
@@ -35,16 +33,13 @@ public class PlannerService {
 
     private final PlannerRepository plannerRepository;
     private final CustomPlannerRepository customPlannerRepository;
-    private final PlannerSearchRepository plannerSearchRepository;
-    private final PlannerDetailSearchRepository plannerDetailSearchRepository;
     private final RedisUtil redisUtil;
     private final RedissonClient redissonClient;
+    private final PlannerSearchRepository plannerSearchRepository;
 
 
     public Planner createPlanner(PlannerRequest request, UserEntity user, String thumbnail) {
-        Planner planner = plannerRepository.save(request.toEntity(user, thumbnail));
-        plannerSearchRepository.save(PlannerDocument.ofEntity(planner));
-        return planner;
+        return plannerRepository.save(request.toEntity(user, thumbnail));
     }
 
     public Planner findById(Long plannerId) {
