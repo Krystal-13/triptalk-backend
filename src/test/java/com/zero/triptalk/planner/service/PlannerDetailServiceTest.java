@@ -9,6 +9,7 @@ import com.zero.triptalk.planner.dto.response.PlannerDetailResponse;
 import com.zero.triptalk.planner.entity.Planner;
 import com.zero.triptalk.planner.entity.PlannerDetail;
 import com.zero.triptalk.planner.repository.PlannerDetailRepository;
+import com.zero.triptalk.planner.repository.PlannerDetailSearchRepository;
 import com.zero.triptalk.planner.repository.PlannerRepository;
 import com.zero.triptalk.user.entity.UserEntity;
 import com.zero.triptalk.user.repository.UserRepository;
@@ -55,6 +56,8 @@ class PlannerDetailServiceTest {
     @Mock
     private PlannerDetailRepository plannerDetailRepository;
 
+    @Mock
+    private PlannerDetailSearchRepository plannerDetailSearchRepository;
 
     @InjectMocks
     private PlannerDetailService plannerDetailService;
