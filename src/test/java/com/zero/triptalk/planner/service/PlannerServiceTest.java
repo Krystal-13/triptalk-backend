@@ -3,6 +3,7 @@ package com.zero.triptalk.planner.service;
 import com.zero.triptalk.planner.dto.request.PlannerRequest;
 import com.zero.triptalk.planner.entity.Planner;
 import com.zero.triptalk.planner.repository.PlannerRepository;
+import com.zero.triptalk.planner.repository.PlannerSearchRepository;
 import com.zero.triptalk.planner.type.PlannerStatus;
 import com.zero.triptalk.user.entity.UserEntity;
 import org.junit.jupiter.api.Assertions;
@@ -22,6 +23,9 @@ class PlannerServiceTest {
 
     @Mock
     private PlannerRepository plannerRepository;
+
+    @Mock
+    private PlannerSearchRepository plannerSearchRepository;
 
     @InjectMocks
     private PlannerService plannerService;
