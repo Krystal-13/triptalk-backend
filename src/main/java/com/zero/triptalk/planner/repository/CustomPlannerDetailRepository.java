@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.zero.triptalk.like.entity.QPlannerLike.plannerLike;
+import static com.zero.triptalk.place.entity.QPlace.place;
 import static com.zero.triptalk.planner.entity.QPlanner.planner;
 import static com.zero.triptalk.planner.entity.QPlannerDetail.plannerDetail;
 import static com.zero.triptalk.user.entity.QUserEntity.userEntity;
@@ -19,29 +19,21 @@ public class CustomPlannerDetailRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Tuple> getPlannerListByLikeAndViewUpdateDt(LocalDateTime from, LocalDateTime to) {
+    /**
+     * mariaDB <-> elasticsearch 동기화 테스트에 필요한 데이터 조회 3.PlannerDetails (Spring Scheduler 방식)
+     */
+    public List<Tuple> getPlannerDetailListByModifiedAt() {
 
-        return queryFactory.select(planner, plannerLike.likeCount)
-                .from(planner)
-                .leftJoin(plannerLike).on(planner.eq(plannerLike.planner))
-                .leftJoin(userEntity).on(userEntity.eq(planner.user))
-                .where(plannerLike.likeDt.between(from, to)
-                        .or(planner.modifiedAt.between(from, to)))
-                .groupBy(planner.plannerId)
-                .fetch();
-    }
-
-    public List<Tuple> getPlannerDetailListByPlannerId(List<Long> ids) {
-
-        return queryFactory.select(plannerDetail, plannerLike.likeCount)
+        return queryFactory.select(plannerDetail, userEntity.nickname, userEntity.profile, place.roadAddress, place.addressName, place.latitude, place.longitude)
                 .from(plannerDetail)
-                .join(plannerDetail.images).fetchJoin()
-                .join(plannerDetail.place).fetchJoin()
-                .leftJoin(plannerLike).on(plannerLike.planner.eq(plannerDetail.planner))
-                .where(plannerDetail.planner.plannerId.in(ids))
+                .leftJoin(plannerDetail.images).fetchJoin()
+                .leftJoin(planner).on(plannerDetail.planner.eq(planner)).fetchJoin()
+                .leftJoin(userEntity).on(plannerDetail.userId.eq(userEntity.userId)).fetchJoin()
+                .leftJoin(place).on(plannerDetail.place.eq(place)).fetchJoin()
+                .where(plannerDetail.modifiedAt.after(LocalDateTime.of(1970,1,1,9,0,0, 0)))
+                .orderBy(plannerDetail.modifiedAt.asc())
                 .fetch();
     }
-
 
     public void deletePlannerDetail(List<Long> updateIds, Long plannerId) {
 

@@ -23,7 +23,8 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/users/**",
+                .antMatchers("/sync/**",
+                            "/api/users/**",
                             "/api/auth/**",
                             "/api/oauth/**",
                             "/swagger-ui.html",

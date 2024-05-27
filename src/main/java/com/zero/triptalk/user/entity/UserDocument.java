@@ -26,4 +26,14 @@ public class UserDocument {
         this.nickname = nickname;
         this.aboutMe = aboutMe;
     }
+
+    public static UserDocument ofEntity (UserEntity userEntity) {
+
+        return UserDocument.builder()
+                .userId(userEntity.getUserId())
+                .profile(userEntity.getProfile())
+                .nickname(userEntity.getNickname())
+                .aboutMe(userEntity.getAboutMe())
+                .build();
+    }
 }

@@ -1,5 +1,7 @@
 package com.zero.triptalk.planner.entity;
 
+import com.querydsl.core.Tuple;
+import com.zero.triptalk.place.entity.QPlace;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +12,10 @@ import org.springframework.data.elasticsearch.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
+import static com.zero.triptalk.planner.entity.QPlannerDetail.plannerDetail;
+import static com.zero.triptalk.user.entity.QUserEntity.userEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,5 +45,21 @@ public class PlannerDetailDocument {
         this.description = description;
         this.images = images;
         this.date = date;
+    }
+
+    public static PlannerDetailDocument ofEntity(Tuple tuple) {
+
+        PlannerDetail plannerDetailFromTuple = Objects.requireNonNull(tuple.get(plannerDetail));
+
+        return PlannerDetailDocument.builder()
+                .plannerDetailId(plannerDetailFromTuple.getPlannerDetailId())
+                .userNickname(tuple.get(userEntity.nickname))
+                .profile(String.valueOf(userEntity.profile))
+                .addressName(tuple.get(QPlace.place.addressName))
+                .point(new GeoPoint(Objects.requireNonNull(tuple.get(QPlace.place.latitude)), Objects.requireNonNull(tuple.get(QPlace.place.longitude))))
+                .description(plannerDetailFromTuple.getDescription())
+                .images(plannerDetailFromTuple.getImages())
+                .date(plannerDetailFromTuple.getDate())
+                .build();
     }
 }
