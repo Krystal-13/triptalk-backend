@@ -22,18 +22,19 @@ public class PlannerDetail extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long plannerDetailId;
 
+    @JoinColumn(name = "user_id")
     private Long userId;
 
     private String description;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> images;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "planner_id")
     private Planner planner;
 

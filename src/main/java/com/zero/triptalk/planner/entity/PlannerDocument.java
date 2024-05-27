@@ -1,5 +1,6 @@
 package com.zero.triptalk.planner.entity;
 
+import com.querydsl.core.Tuple;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,11 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.WriteTypeHint;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+
+import static com.zero.triptalk.like.entity.QPlannerLike.plannerLike;
+import static com.zero.triptalk.planner.entity.QPlanner.planner;
+import static com.zero.triptalk.user.entity.QUserEntity.userEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,5 +49,23 @@ public class PlannerDocument {
         this.views = views;
         this.likes = likes;
         this.createdAt = createdAt;
+    }
+
+    public static PlannerDocument ofEntity(Tuple tuple) {
+
+        Planner plannerFromTuple = Objects.requireNonNull(tuple.get(planner));
+
+        return PlannerDocument.builder()
+                .plannerId(plannerFromTuple.getPlannerId())
+                .title(plannerFromTuple.getTitle())
+                .thumbnail(plannerFromTuple.getThumbnail())
+                .userId(tuple.get(userEntity.userId))
+                .userNickname(tuple.get(userEntity.nickname))
+                .startDate(plannerFromTuple.getStartDate())
+                .endDate(plannerFromTuple.getEndDate())
+                .views(plannerFromTuple.getViews())
+                .likes(tuple.get(plannerLike.likeCount))
+                .createdAt(plannerFromTuple.getCreatedAt())
+                .build();
     }
 }
