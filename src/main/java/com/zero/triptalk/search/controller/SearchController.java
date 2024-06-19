@@ -25,7 +25,11 @@ public class SearchController {
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<List<PlannerSearchResponse>> getTop6Planners() {
 
-        return ResponseEntity.ok(searchService.getTop6PlannersWithLikes());
+        /* redis 에서 조회 */
+        return ResponseEntity.ok(searchService.getTop6Planners());
+
+        /* elasticsearch 에서 조회 */
+//        return ResponseEntity.ok(searchService.getTop6PlannersFromES());
     }
 
     @GetMapping("/search/{region}/{searchType}")

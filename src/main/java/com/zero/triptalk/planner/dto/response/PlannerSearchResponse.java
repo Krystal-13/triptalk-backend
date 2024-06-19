@@ -1,5 +1,7 @@
 package com.zero.triptalk.planner.dto.response;
 
+import com.querydsl.core.Tuple;
+import com.zero.triptalk.planner.entity.Planner;
 import com.zero.triptalk.planner.entity.PlannerDocument;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,6 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+
+import static com.zero.triptalk.like.entity.QPlannerLike.plannerLike;
+import static com.zero.triptalk.planner.entity.QPlanner.planner;
+import static com.zero.triptalk.user.entity.QUserEntity.userEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,6 +51,22 @@ public class PlannerSearchResponse {
                 .endDate(document.getEndDate())
                 .views(document.getViews())
                 .likeCount(document.getLikes())
+                .build();
+    }
+
+    public static PlannerSearchResponse ofTuple(Tuple tuple) {
+
+        Planner plannerOfTuple = Objects.requireNonNull(tuple.get(planner));
+
+        return PlannerSearchResponse.builder()
+                .plannerId(plannerOfTuple.getPlannerId())
+                .title(plannerOfTuple.getTitle())
+                .thumbnail(plannerOfTuple.getThumbnail())
+                .nickname(tuple.get(userEntity.nickname))
+                .startDate(plannerOfTuple.getStartDate())
+                .endDate(plannerOfTuple.getEndDate())
+                .views(plannerOfTuple.getViews())
+                .likeCount(tuple.get(plannerLike.likeCount))
                 .build();
     }
 }

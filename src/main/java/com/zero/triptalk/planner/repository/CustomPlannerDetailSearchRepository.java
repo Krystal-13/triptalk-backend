@@ -1,6 +1,9 @@
 package com.zero.triptalk.planner.repository;
 
 import co.elastic.clients.elasticsearch._types.ElasticsearchException;
+import co.elastic.clients.elasticsearch._types.LatLonGeoLocation;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import com.zero.triptalk.exception.code.SearchErrorCode;
 import com.zero.triptalk.exception.custom.SearchException;
 import com.zero.triptalk.planner.entity.PlannerDetailDocument;
@@ -8,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
@@ -72,15 +76,30 @@ public class CustomPlannerDetailSearchRepository {
 
     public List<PlannerDetailDocument> searchByGeoPointDistance(GeoPoint point, String distance, Pageable pageable) {
 
-        Criteria criteria = Criteria.where("point").within(point, distance);
+        Query geoDistanceQuery = QueryBuilders.geoDistance()
+                .field("point")
+                .distance(distance)
+                .location(l -> l
+                        .latlon(new LatLonGeoLocation.Builder()
+                                .lat(point.getLat())
+                                .lon(point.getLon())
+                                .build()))
+                .build()._toQuery();
 
-        CriteriaQuery query = CriteriaQuery.builder(criteria)
+        Query boolQuery = QueryBuilders.bool()
+                .filter(geoDistanceQuery)
+                .build()._toQuery();
+
+        GeoDistanceOrder geoDistanceOrder = new GeoDistanceOrder("point", point);
+
+        NativeQuery query = NativeQuery.builder()
                 .withSourceFilter(new FetchSourceFilter(
                         new String[]{"plannerDetailId", "userNickname",
                                         "profile", "place",
                                             "point", "description",
                                                 "images", "date"}, null))
-                .withSort(Sort.by(new GeoDistanceOrder("point", point)))
+                .withQuery(boolQuery)
+                .withSort(Sort.by(geoDistanceOrder))
                 .withPageable(pageable)
                 .build();
 
