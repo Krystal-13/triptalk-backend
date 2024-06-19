@@ -28,6 +28,8 @@ public class PlannerDetail extends BaseEntity {
     private String description;
 
     @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "planner_detail_images", joinColumns = @JoinColumn(name = "planner_detail_id"))
+    @Column(name = "image")
     private List<String> images;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,10 +1,12 @@
 package com.zero.triptalk.planner.service;
 
+import com.querydsl.core.Tuple;
 import com.zero.triptalk.component.RedisUtil;
 import com.zero.triptalk.exception.code.PlannerErrorCode;
 import com.zero.triptalk.exception.custom.PlannerException;
 import com.zero.triptalk.planner.dto.request.PlannerRequest;
 import com.zero.triptalk.planner.dto.response.PlannerListResult;
+import com.zero.triptalk.planner.dto.response.PlannerSearchResponse;
 import com.zero.triptalk.planner.entity.Planner;
 import com.zero.triptalk.planner.repository.CustomPlannerRepository;
 import com.zero.triptalk.planner.repository.PlannerRepository;
@@ -24,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -108,5 +112,16 @@ public class PlannerService {
             redisUtil.addUserSet(userKey, plannerId);
             redisUtil.increaseViews(plannerKey);
         }
+    }
+
+    /**
+     * Top6 From MariaDB
+     */
+    public List<PlannerSearchResponse> getPlannerTop6FromMaria() {
+
+        List<Tuple> plannerTop6ByLikes = customPlannerRepository.getPlannerTop6ByLikes();
+
+        return plannerTop6ByLikes.stream().map(PlannerSearchResponse::ofTuple).collect(Collectors.toList());
+
     }
 }

@@ -5,6 +5,7 @@ import com.zero.triptalk.exception.custom.UserException;
 import com.zero.triptalk.image.service.ImageService;
 import com.zero.triptalk.planner.dto.response.PlannerDetailListResponse;
 import com.zero.triptalk.planner.dto.response.PlannerDetailResponse;
+import com.zero.triptalk.planner.dto.response.PlannerDetailSearchResponse;
 import com.zero.triptalk.planner.entity.PlannerDetail;
 import com.zero.triptalk.planner.repository.CustomPlannerDetailRepository;
 import com.zero.triptalk.planner.repository.PlannerDetailRepository;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.zero.triptalk.exception.code.PlannerDetailErrorCode.NOT_FOUND_PLANNER_DETAIL;
@@ -83,5 +86,32 @@ public class PlannerDetailService {
             throw new PlannerDetailException(NOT_FOUND_PLANNER_DETAIL);
         }
         return byPlanner;
+    }
+
+    /**
+     * 범위 검색 결과 from MariaDB
+     */
+    public List<PlannerDetailSearchResponse> getPlannerDetailsByDistance(double longitude, double latitude) {
+
+        List<Object[]> results = plannerDetailRepository.findTop6PlannerDetailsWithinDistance(longitude, latitude);
+
+        List<PlannerDetailSearchResponse> plannerDetails = new ArrayList<>();
+
+        for (Object[] result : results) {
+
+            PlannerDetailSearchResponse response = PlannerDetailSearchResponse.builder()
+                    .plannerDetailId(((Number) result[1]).longValue())
+                    .description((String) result[2])
+                    .date(((Timestamp) result[3]).toLocalDateTime())
+                    .nickname((String) result[4])
+                    .profile((String) result[5])
+                    .lon((Double) result[6])
+                    .lat((Double) result[7])
+                    .build();
+
+            plannerDetails.add(response);
+        }
+
+        return plannerDetails;
     }
 }

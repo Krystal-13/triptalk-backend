@@ -4,9 +4,7 @@ import com.zero.triptalk.application.PlannerApplication;
 import com.zero.triptalk.planner.dto.request.CreatePlannerInfo;
 import com.zero.triptalk.planner.dto.request.PlannerDetailRequest;
 import com.zero.triptalk.planner.dto.request.UpdatePlannerInfo;
-import com.zero.triptalk.planner.dto.response.PlannerDetailResponse;
-import com.zero.triptalk.planner.dto.response.PlannerListResult;
-import com.zero.triptalk.planner.dto.response.PlannerResponse;
+import com.zero.triptalk.planner.dto.response.*;
 import com.zero.triptalk.planner.service.PlannerDetailService;
 import com.zero.triptalk.planner.service.PlannerService;
 import com.zero.triptalk.planner.type.SortType;
@@ -108,6 +106,18 @@ public class PlannerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/maria")
+    public ResponseEntity<List<PlannerSearchResponse>> getPlannerTop6FromMaria() {
 
+        return ResponseEntity.ok(plannerService.getPlannerTop6FromMaria());
+    }
+
+    @GetMapping("/details/distance")
+    public ResponseEntity<List<PlannerDetailSearchResponse>> getPlannerDetailsByDistance(@RequestParam double longitude, @RequestParam double latitude) {
+
+        List<PlannerDetailSearchResponse> result = plannerDetailService.getPlannerDetailsByDistance(longitude, latitude);
+
+        return ResponseEntity.ok(result);
+    }
 
 }

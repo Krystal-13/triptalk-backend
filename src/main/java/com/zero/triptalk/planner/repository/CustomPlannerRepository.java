@@ -96,4 +96,17 @@ public class CustomPlannerRepository {
                 .fetch();
 
     }
+
+    public List<Tuple> getPlannerTop6ByLikes() {
+
+        return queryFactory.select(planner, userEntity.nickname, plannerLike.likeCount)
+                .from(planner)
+                .leftJoin(userEntity).on(planner.user.eq(userEntity))
+                .leftJoin(plannerLike).on(planner.eq(plannerLike.planner))
+                .orderBy(plannerLike.likeCount.desc())
+                .limit(6)
+                .fetch();
+    }
+
+
 }

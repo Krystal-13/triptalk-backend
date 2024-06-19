@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.WriteTypeHint;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -29,12 +26,15 @@ public class PlannerDocument {
     private String thumbnail;
     private Long userId;
     private String userNickname;
+    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_millis, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime startDate;
+    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_millis, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime endDate;
     @Field(type = FieldType.Integer)
     private Long views;
     @Field(type = FieldType.Integer)
     private Long likes;
+    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_millis, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime createdAt;
 
     @Builder
@@ -67,5 +67,9 @@ public class PlannerDocument {
                 .likes(tuple.get(plannerLike.likeCount))
                 .createdAt(plannerFromTuple.getCreatedAt())
                 .build();
+    }
+
+    public Long getLikes() {
+        return likes == null ? 0 : likes;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.data.elasticsearch.core.query.FetchSourceFilter;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,4 +40,22 @@ public class CustomPlannerSearchRepository {
                 .stream().map(SearchHit::getContent).collect(Collectors.toList());
     }
 
+
+    // ElasticsearchConfig 에서 해결안되면 해당 매서드로 불러와보기 - 차선책
+    public List<PlannerDocument> getAllByCreatedAtAndModifiedAt(LocalDateTime oneMonthAgo, Pageable pageable) {
+
+        Criteria criteria = Criteria.where("createdAt").and("modifiedAt").greaterThanEqual(oneMonthAgo);
+
+        CriteriaQuery query = CriteriaQuery.builder(criteria)
+                .withSourceFilter(new FetchSourceFilter(
+                        new String[]{"plannerId", "title",
+                                "thumbnail", "userId",
+                                "userNickname", "startDate",
+                                "endDate", "views", "likes", "createdAt"}, null))
+                .withPageable(pageable)
+                .build();
+
+        return elasticsearchOperations.search(query, PlannerDocument.class)
+                .stream().map(SearchHit::getContent).collect(Collectors.toList());
+    }
 }
