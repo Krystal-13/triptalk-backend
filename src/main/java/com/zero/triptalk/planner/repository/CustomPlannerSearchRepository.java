@@ -2,7 +2,6 @@ package com.zero.triptalk.planner.repository;
 
 import com.zero.triptalk.planner.entity.PlannerDocument;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-@Slf4j
 public class CustomPlannerSearchRepository {
 
     private final ElasticsearchOperations elasticsearchOperations;
@@ -40,8 +38,6 @@ public class CustomPlannerSearchRepository {
                 .stream().map(SearchHit::getContent).collect(Collectors.toList());
     }
 
-
-    // ElasticsearchConfig 에서 해결안되면 해당 매서드로 불러와보기 - 차선책
     public List<PlannerDocument> getAllByCreatedAtAndModifiedAt(LocalDateTime oneMonthAgo, Pageable pageable) {
 
         Criteria criteria = Criteria.where("createdAt").and("modifiedAt").greaterThanEqual(oneMonthAgo);

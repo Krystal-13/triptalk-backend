@@ -12,7 +12,7 @@ import com.zero.triptalk.planner.entity.PlannerDocument;
 import com.zero.triptalk.planner.repository.CustomPlannerDetailSearchRepository;
 import com.zero.triptalk.planner.repository.CustomPlannerSearchRepository;
 import com.zero.triptalk.planner.repository.PlannerSearchRepository;
-import com.zero.triptalk.search.PlannerWithPopularity;
+import com.zero.triptalk.planner.dto.PlannerWithPopularity;
 import com.zero.triptalk.user.entity.UserDocument;
 import com.zero.triptalk.user.repository.UserSearchRepository;
 import com.zero.triptalk.user.response.UserInfoSearchResponse;
